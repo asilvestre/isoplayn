@@ -137,4 +137,41 @@ public class TmxTile implements TmxElement {
 	 * Properties for this tileset indexed by name
 	 */
 	private TmxProperties properties = new TmxProperties();
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (diagonallyFlipped ? 1231 : 1237);
+		result = prime * result + (horitzontallyFlipped ? 1231 : 1237);
+		result = prime * result + id;
+		result = prime * result + ((properties == null) ? 0 : properties.hashCode());
+		result = prime * result + (verticallyFlipped ? 1231 : 1237);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TmxTile other = (TmxTile) obj;
+		if (diagonallyFlipped != other.diagonallyFlipped)
+			return false;
+		if (horitzontallyFlipped != other.horitzontallyFlipped)
+			return false;
+		if (id != other.id)
+			return false;
+		if (properties == null) {
+			if (other.properties != null)
+				return false;
+		} else if (!properties.equals(other.properties))
+			return false;
+		if (verticallyFlipped != other.verticallyFlipped)
+			return false;
+		return true;
+	}
 }

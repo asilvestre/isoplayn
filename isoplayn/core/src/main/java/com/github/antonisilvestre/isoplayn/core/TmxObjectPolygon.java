@@ -60,4 +60,29 @@ public class TmxObjectPolygon extends TmxObject {
 	 * List of coords that make up the polygon
 	 */
 	private LinkedList<Coord> coords = new LinkedList<Coord>();
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((coords == null) ? 0 : coords.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TmxObjectPolygon other = (TmxObjectPolygon) obj;
+		if (coords == null) {
+			if (other.coords != null)
+				return false;
+		} else if (!coords.equals(other.coords))
+			return false;
+		return true;
+	}
 }

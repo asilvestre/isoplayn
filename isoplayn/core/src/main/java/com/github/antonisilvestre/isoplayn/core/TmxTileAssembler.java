@@ -21,6 +21,8 @@ package com.github.antonisilvestre.isoplayn.core;
 public class TmxTileAssembler extends TmxElementAssembler {
 	public TmxTileAssembler(TmxTile tile) {
 		super(tile);
+		
+		this.tile = tile;
 	}
 	
 	@Override

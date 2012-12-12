@@ -116,4 +116,41 @@ public class TmxData implements TmxElement {
 	private Compression compression = Compression.ZLIB;
 
 	private Vector<TmxDataTile> tiles = new Vector<TmxDataTile>();
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((compression == null) ? 0 : compression.hashCode());
+		result = prime * result + ((data == null) ? 0 : data.hashCode());
+		result = prime * result + ((encoding == null) ? 0 : encoding.hashCode());
+		result = prime * result + ((tiles == null) ? 0 : tiles.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TmxData other = (TmxData) obj;
+		if (compression != other.compression)
+			return false;
+		if (data == null) {
+			if (other.data != null)
+				return false;
+		} else if (!data.equals(other.data))
+			return false;
+		if (encoding != other.encoding)
+			return false;
+		if (tiles == null) {
+			if (other.tiles != null)
+				return false;
+		} else if (!tiles.equals(other.tiles))
+			return false;
+		return true;
+	}
 }

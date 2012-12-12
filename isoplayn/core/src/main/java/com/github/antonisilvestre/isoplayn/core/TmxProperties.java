@@ -26,7 +26,7 @@ public class TmxProperties implements TmxElement {
 	 * @param name
 	 * @return a property identified by name or null if not found
 	 */
-	public TmxProperty getProperty(String name) {
+	public String getProperty(String name) {
 		return properties.get(name);
 	}
 
@@ -35,8 +35,8 @@ public class TmxProperties implements TmxElement {
 	 * 
 	 * @param property
 	 */
-	public void addProperty(TmxProperty property) {
-		properties.put(property.getName(), property);
+	public void addProperty(String name, String value) {
+		properties.put(name, value);
 	}
 
 	@Override
@@ -59,5 +59,30 @@ public class TmxProperties implements TmxElement {
 		return new TmxPropertiesAssembler(this);
 	}
 
-	private TreeMap<String, TmxProperty> properties = new TreeMap<String, TmxProperty>();
+	private TreeMap<String, String> properties = new TreeMap<String, String>();
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((properties == null) ? 0 : properties.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TmxProperties other = (TmxProperties) obj;
+		if (properties == null) {
+			if (other.properties != null)
+				return false;
+		} else if (!properties.equals(other.properties))
+			return false;
+		return true;
+	}
 }

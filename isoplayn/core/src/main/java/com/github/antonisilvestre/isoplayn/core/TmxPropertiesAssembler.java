@@ -27,7 +27,7 @@ public class TmxPropertiesAssembler extends TmxElementAssembler {
 
 	@Override
 	public void assemble(TmxProperty property) {
-		properties.addProperty(property);
+		properties.addProperty(property.getName(), property.getValue());
 	}
 
 	private TmxProperties properties;

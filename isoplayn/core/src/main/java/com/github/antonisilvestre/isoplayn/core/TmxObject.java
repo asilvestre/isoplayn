@@ -197,4 +197,56 @@ public class TmxObject implements TmxElement {
 	 * Properties for this map indexed by name
 	 */
 	protected TmxProperties properties = new TmxProperties();
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + height;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((properties == null) ? 0 : properties.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		result = prime * result + (visible ? 1231 : 1237);
+		result = prime * result + width;
+		result = prime * result + x;
+		result = prime * result + y;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TmxObject other = (TmxObject) obj;
+		if (height != other.height)
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (properties == null) {
+			if (other.properties != null)
+				return false;
+		} else if (!properties.equals(other.properties))
+			return false;
+		if (type == null) {
+			if (other.type != null)
+				return false;
+		} else if (!type.equals(other.type))
+			return false;
+		if (visible != other.visible)
+			return false;
+		if (width != other.width)
+			return false;
+		if (x != other.x)
+			return false;
+		if (y != other.y)
+			return false;
+		return true;
+	}
 }

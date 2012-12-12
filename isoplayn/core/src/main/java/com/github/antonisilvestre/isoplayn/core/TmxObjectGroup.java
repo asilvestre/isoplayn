@@ -160,4 +160,50 @@ public class TmxObjectGroup implements TmxLayer {
 	 * Properties for this map indexed by name
 	 */
 	private TmxProperties properties = new TmxProperties();
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + color;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((objects == null) ? 0 : objects.hashCode());
+		result = prime * result + Float.floatToIntBits(opacity);
+		result = prime * result + ((properties == null) ? 0 : properties.hashCode());
+		result = prime * result + (visible ? 1231 : 1237);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TmxObjectGroup other = (TmxObjectGroup) obj;
+		if (color != other.color)
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (objects == null) {
+			if (other.objects != null)
+				return false;
+		} else if (!objects.equals(other.objects))
+			return false;
+		if (Float.floatToIntBits(opacity) != Float.floatToIntBits(other.opacity))
+			return false;
+		if (properties == null) {
+			if (other.properties != null)
+				return false;
+		} else if (!properties.equals(other.properties))
+			return false;
+		if (visible != other.visible)
+			return false;
+		return true;
+	}
 }
