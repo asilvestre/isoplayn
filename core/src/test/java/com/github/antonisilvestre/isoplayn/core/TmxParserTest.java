@@ -21,7 +21,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import org.junit.Test;
-import org.omg.PortableInterceptor.SUCCESSFUL;
 
 import com.github.antonisilvestre.isoplayn.core.TmxParser.ParseTmxException;
 
