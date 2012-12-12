@@ -1,4 +1,4 @@
-package com.github.antonisilvestre.isoplayn.core;
+package com.github.asilvestre.isoplayn.core.game;
 
 import static playn.core.PlayN.*;
 
