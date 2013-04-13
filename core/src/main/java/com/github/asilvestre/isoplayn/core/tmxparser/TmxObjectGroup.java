@@ -114,6 +114,14 @@ public class TmxObjectGroup implements TmxLayer {
 	@Override
 	public void accept(TmxElementVisitor visitor) {
 		visitor.visit(this);
+		
+		// visiting all related objects
+		Iterator<TmxObject> iterObjects = objects.iterator();
+		while (iterObjects.hasNext()) {
+			iterObjects.next().accept(visitor);
+		}
+		
+		properties.accept(visitor);
 	}
 
 	@Override

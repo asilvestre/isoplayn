@@ -23,6 +23,9 @@ public class TmxObjectTile extends TmxObject {
 	@Override
 	public void accept(TmxElementVisitor visitor) {
 		visitor.visit(this);
+
+		// visiting all related objects
+		properties.accept(visitor);
 	}
 
 	@Override
@@ -48,7 +51,8 @@ public class TmxObjectTile extends TmxObject {
 	}
 
 	/**
-	 * @param gid the gid to set
+	 * @param gid
+	 *            the gid to set
 	 */
 	public void setGid(int gid) {
 		this.gid = gid;

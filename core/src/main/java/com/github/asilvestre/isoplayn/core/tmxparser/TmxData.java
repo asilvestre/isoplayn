@@ -16,6 +16,7 @@
 
 package com.github.asilvestre.isoplayn.core.tmxparser;
 
+import java.util.Iterator;
 import java.util.Vector;
 
 public class TmxData implements TmxElement {
@@ -94,6 +95,12 @@ public class TmxData implements TmxElement {
 
 	public void accept(TmxElementVisitor visitor) {
 		visitor.visit(this);
+
+		// Visiting all related objects
+		Iterator<TmxDataTile> iterTiles = tiles.iterator();
+		while (iterTiles.hasNext()) {
+			iterTiles.next().accept(visitor);
+		}
 	}
 
 	public void addTile(TmxDataTile tile) {

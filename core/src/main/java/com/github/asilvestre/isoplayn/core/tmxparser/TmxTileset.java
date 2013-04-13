@@ -16,6 +16,7 @@
 
 package com.github.asilvestre.isoplayn.core.tmxparser;
 
+import java.util.Iterator;
 import java.util.TreeMap;
 
 public class TmxTileset implements TmxElement {
@@ -181,6 +182,19 @@ public class TmxTileset implements TmxElement {
 	@Override
 	public void accept(TmxElementVisitor visitor) {
 		visitor.visit(this);
+
+		// visiting all related objects
+		properties.accept(visitor);
+		tileOffset.accept(visitor);
+
+		if (image != null) {
+			image.accept(visitor);
+		}
+		
+		Iterator<TmxTile> iterTiles = customTiles.values().iterator();
+		while (iterTiles.hasNext()) {
+			iterTiles.next().accept(visitor);
+		}
 	}
 
 	@Override

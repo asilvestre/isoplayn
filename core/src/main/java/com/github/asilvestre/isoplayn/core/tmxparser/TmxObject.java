@@ -141,6 +141,9 @@ public class TmxObject implements TmxElement {
 	@Override
 	public void accept(TmxElementVisitor visitor) {
 		visitor.visit(this);
+		
+		//visiting all related objects
+		properties.accept(visitor);
 	}
 
 	@Override

@@ -98,6 +98,10 @@ public class TmxTileLayer implements TmxLayer {
 	@Override
 	public void accept(TmxElementVisitor visitor) {
 		visitor.visit(this);
+
+		// visiting all related objects
+		data.accept(visitor);
+		properties.accept(visitor);
 	}
 
 	@Override

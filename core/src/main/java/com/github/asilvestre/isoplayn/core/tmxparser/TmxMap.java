@@ -176,6 +176,19 @@ class TmxMap implements TmxElement {
 	@Override
 	public void accept(TmxElementVisitor visitor) {
 		visitor.visit(this);
+
+		// Visiting all related objects
+		Iterator<TmxTileset> iterTilesets = tilesets.values().iterator();
+		while (iterTilesets.hasNext()) {
+			iterTilesets.next().accept(visitor);
+		}
+
+		Iterator<TmxLayer> iterLayers = layers.iterator();
+		while (iterLayers.hasNext()) {
+			iterLayers.next().accept(visitor);
+		}
+
+		properties.accept(visitor);
 	}
 
 	@Override
@@ -187,7 +200,7 @@ class TmxMap implements TmxElement {
 	public TmxElementAssembler createAssembler() {
 		return new TmxMapAssembler(this);
 	}
-	
+
 	@Override
 	public void getAssembled(TmxElementAssembler assembler) throws TmxInvalidAssembly {
 		assembler.assemble(this);

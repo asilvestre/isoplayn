@@ -2,6 +2,10 @@ package com.github.asilvestre.isoplayn.core.game;
 
 import static playn.core.PlayN.*;
 
+import com.github.asilvestre.jpurexml.XmlDoc;
+import com.github.asilvestre.jpurexml.XmlParseException;
+import com.github.asilvestre.jpurexml.XmlParser;
+
 import playn.core.Game;
 import playn.core.Image;
 import playn.core.ImageLayer;
@@ -22,6 +26,18 @@ public class IsoPlayN implements Game {
 
   @Override
   public void update(float delta) {
+	  
+	  XmlDoc d;
+	try {
+		d = XmlParser.parseXml("<root> hhh  </root>");
+		 log().info(d.toString());
+	} catch (XmlParseException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	  
+	  
+	 
   }
 
   @Override
