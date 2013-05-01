@@ -23,7 +23,6 @@ import playn.java.JavaPlatform;
 
 /**
  * Code to run a test that needs asynchrony from PlayN functionality
- * 
  */
 public abstract class AsyncTest {
 

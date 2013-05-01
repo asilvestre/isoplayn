@@ -20,7 +20,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.TreeMap;
 
-class TmxMap implements TmxElement {
+public class TmxMap implements TmxElement {
 	/**
 	 * Different orientations currently orthogonal or isometric
 	 */

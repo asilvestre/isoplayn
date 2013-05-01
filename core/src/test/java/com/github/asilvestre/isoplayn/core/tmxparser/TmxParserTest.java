@@ -32,10 +32,6 @@ import com.github.asilvestre.isoplayn.core.tmxparser.TmxParser.ParseTmxException
  * Tests for the TMX parser
  */
 public class TmxParserTest {
-    static {
-	JavaPlatform platform = JavaPlatform.register();
-	platform.assets().setPathPrefix("com/github/asilvestre/resources");
-    }
 
     @Test
     public void testParseMapFromFile() {
@@ -53,17 +49,15 @@ public class TmxParserTest {
 	test.start();
 
 	try {
-	    TmxMap res = resCallback.getResult(100000);
+	    TmxMap res = resCallback.getResult(1000);
 	    assertNotNull(res);
 	} catch (CallbackTimeoutException e) {
 	    fail("Operation timed out");
 	} catch (CallbackFailureException e) {
 	    fail("Operation failed: " + e.toString());
 	}
-
-	//test.stop();
     }
-    
+
     @Test
     public void testParseMapFromWrongFile() {
 
@@ -81,12 +75,12 @@ public class TmxParserTest {
 
 	boolean error = false;
 	try {
-	    TmxMap res = resCallback.getResult(100000);
+	    resCallback.getResult(1000);
 	    fail("Operation succeed with wrong file");
 	} catch (CallbackTimeoutException e) {
 	    fail("Operation timed out");
 	} catch (CallbackFailureException e) {
-	    //Correct, we had an error
+	    // Correct, we had an error
 	    error = true;
 	}
 
