@@ -178,6 +178,24 @@ public class TmxTileset implements TmxElement {
 	public void addCustomTile(TmxTile tile) {
 		this.customTiles.put(tile.getId(), tile);
 	}
+	
+	/**
+	 * @param gid Gid of the tile to get its terrain
+	 * @param direction Direction to get the terrain from the tile
+	 * @return The terrain for the given tile and direction, or null if none exists
+	 */
+	public TmxTerrain getTerrain(int gid, TmxTile.TerrainDirections direction) {
+	    TmxTile tile = customTiles.get(gid);
+	    TmxTerrain terrain = null;
+	    
+	    if (tile != null)
+	    {
+		int terrainId = tile.getTerrainId(direction);
+		terrain = terrainTypes.getTerrain(terrainId);
+	    }
+	
+	    return terrain;
+	}
 
 	@Override
 	public void accept(TmxElementVisitor visitor) {
@@ -195,6 +213,8 @@ public class TmxTileset implements TmxElement {
 		while (iterTiles.hasNext()) {
 			iterTiles.next().accept(visitor);
 		}
+		
+		terrainTypes.accept(visitor);
 	}
 
 	@Override
@@ -267,74 +287,85 @@ public class TmxTileset implements TmxElement {
 	 * Custom tiles within this tileset indexed by id
 	 */
 	private TreeMap<Integer, TmxTile> customTiles = new TreeMap<Integer, TmxTile>();
+	
+	/**
+	 * Array of terrain types referenced by tiles
+	 */
+	TmxTerrainTypes terrainTypes = new TmxTerrainTypes();
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((customTiles == null) ? 0 : customTiles.hashCode());
-		result = prime * result + firstgid;
-		result = prime * result + ((image == null) ? 0 : image.hashCode());
-		result = prime * result + margin;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((properties == null) ? 0 : properties.hashCode());
-		result = prime * result + ((source == null) ? 0 : source.hashCode());
-		result = prime * result + spacing;
-		result = prime * result + ((tileOffset == null) ? 0 : tileOffset.hashCode());
-		result = prime * result + tileheight;
-		result = prime * result + tilewidth;
-		return result;
+	    final int prime = 31;
+	    int result = 1;
+	    result = prime * result + ((customTiles == null) ? 0 : customTiles.hashCode());
+	    result = prime * result + firstgid;
+	    result = prime * result + ((image == null) ? 0 : image.hashCode());
+	    result = prime * result + margin;
+	    result = prime * result + ((name == null) ? 0 : name.hashCode());
+	    result = prime * result + ((properties == null) ? 0 : properties.hashCode());
+	    result = prime * result + ((source == null) ? 0 : source.hashCode());
+	    result = prime * result + spacing;
+	    result = prime * result + ((terrainTypes == null) ? 0 : terrainTypes.hashCode());
+	    result = prime * result + ((tileOffset == null) ? 0 : tileOffset.hashCode());
+	    result = prime * result + tileheight;
+	    result = prime * result + tilewidth;
+	    return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		TmxTileset other = (TmxTileset) obj;
-		if (customTiles == null) {
-			if (other.customTiles != null)
-				return false;
-		} else if (!customTiles.equals(other.customTiles))
-			return false;
-		if (firstgid != other.firstgid)
-			return false;
-		if (image == null) {
-			if (other.image != null)
-				return false;
-		} else if (!image.equals(other.image))
-			return false;
-		if (margin != other.margin)
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (properties == null) {
-			if (other.properties != null)
-				return false;
-		} else if (!properties.equals(other.properties))
-			return false;
-		if (source == null) {
-			if (other.source != null)
-				return false;
-		} else if (!source.equals(other.source))
-			return false;
-		if (spacing != other.spacing)
-			return false;
-		if (tileOffset == null) {
-			if (other.tileOffset != null)
-				return false;
-		} else if (!tileOffset.equals(other.tileOffset))
-			return false;
-		if (tileheight != other.tileheight)
-			return false;
-		if (tilewidth != other.tilewidth)
-			return false;
+	    if (this == obj)
 		return true;
+	    if (obj == null)
+		return false;
+	    if (getClass() != obj.getClass())
+		return false;
+	    TmxTileset other = (TmxTileset) obj;
+	    if (customTiles == null) {
+		if (other.customTiles != null)
+		    return false;
+	    } else if (!customTiles.equals(other.customTiles))
+		return false;
+	    if (firstgid != other.firstgid)
+		return false;
+	    if (image == null) {
+		if (other.image != null)
+		    return false;
+	    } else if (!image.equals(other.image))
+		return false;
+	    if (margin != other.margin)
+		return false;
+	    if (name == null) {
+		if (other.name != null)
+		    return false;
+	    } else if (!name.equals(other.name))
+		return false;
+	    if (properties == null) {
+		if (other.properties != null)
+		    return false;
+	    } else if (!properties.equals(other.properties))
+		return false;
+	    if (source == null) {
+		if (other.source != null)
+		    return false;
+	    } else if (!source.equals(other.source))
+		return false;
+	    if (spacing != other.spacing)
+		return false;
+	    if (terrainTypes == null) {
+		if (other.terrainTypes != null)
+		    return false;
+	    } else if (!terrainTypes.equals(other.terrainTypes))
+		return false;
+	    if (tileOffset == null) {
+		if (other.tileOffset != null)
+		    return false;
+	    } else if (!tileOffset.equals(other.tileOffset))
+		return false;
+	    if (tileheight != other.tileheight)
+		return false;
+	    if (tilewidth != other.tilewidth)
+		return false;
+	    return true;
 	}
 }

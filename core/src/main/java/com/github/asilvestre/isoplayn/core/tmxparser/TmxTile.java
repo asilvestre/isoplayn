@@ -18,163 +18,174 @@ package com.github.asilvestre.isoplayn.core.tmxparser;
 
 public class TmxTile implements TmxElement {
 
-	/**
-	 * @return the id
-	 */
-	public int getId() {
-		return id;
-	}
+    /**
+     * Different directions for terrains in a tile
+     */
+    public enum TerrainDirections {
+	TOPLEFT(0), TOPRIGHT(1), BOTTOMLEFT(2), BOTTOMRIGHT(3);
+	
+	private final int value;
+	TerrainDirections(int value) { this.value = value;}
+	public int getValue() { return value;}
+    }
+    
+    /**
+     * @return the id
+     */
+    public int getId() {
+	return id;
+    }
 
-	/**
-	 * @param id
-	 *            the id to set
-	 */
-	public void setId(int id) {
-		this.id = id;
-	}
+    /**
+     * @param id
+     *            the id to set
+     */
+    public void setId(int id) {
+	this.id = id;
+    }
 
-	/**
-	 * @return the horitzontallyFlipped
-	 */
-	public boolean isHoritzontallyFlipped() {
-		return horitzontallyFlipped;
-	}
+    /**
+     * @return the horitzontallyFlipped
+     */
+    public boolean isHoritzontallyFlipped() {
+	return horitzontallyFlipped;
+    }
 
-	/**
-	 * @param horitzontallyFlipped
-	 *            the horitzontallyFlipped to set
-	 */
-	public void setHoritzontallyFlipped(boolean horitzontallyFlipped) {
-		this.horitzontallyFlipped = horitzontallyFlipped;
-	}
+    /**
+     * @param horitzontallyFlipped
+     *            the horitzontallyFlipped to set
+     */
+    public void setHoritzontallyFlipped(boolean horitzontallyFlipped) {
+	this.horitzontallyFlipped = horitzontallyFlipped;
+    }
 
-	/**
-	 * @return the verticallyFlipped
-	 */
-	public boolean isVerticallyFlipped() {
-		return verticallyFlipped;
-	}
+    /**
+     * @return the verticallyFlipped
+     */
+    public boolean isVerticallyFlipped() {
+	return verticallyFlipped;
+    }
 
-	/**
-	 * @param verticallyFlipped
-	 *            the verticallyFlipped to set
-	 */
-	public void setVerticallyFlipped(boolean verticallyFlipped) {
-		this.verticallyFlipped = verticallyFlipped;
-	}
+    /**
+     * @param verticallyFlipped
+     *            the verticallyFlipped to set
+     */
+    public void setVerticallyFlipped(boolean verticallyFlipped) {
+	this.verticallyFlipped = verticallyFlipped;
+    }
 
-	/**
-	 * @return the diagonallyFlipped
-	 */
-	public boolean isDiagonallyFlipped() {
-		return diagonallyFlipped;
-	}
+    /**
+     * @return the diagonallyFlipped
+     */
+    public boolean isDiagonallyFlipped() {
+	return diagonallyFlipped;
+    }
 
-	/**
-	 * @param diagonallyFlipped
-	 *            the diagonallyFlipped to set
-	 */
-	public void setDiagonallyFlipped(boolean diagonallyFlipped) {
-		this.diagonallyFlipped = diagonallyFlipped;
-	}
+    /**
+     * @param diagonallyFlipped
+     *            the diagonallyFlipped to set
+     */
+    public void setDiagonallyFlipped(boolean diagonallyFlipped) {
+	this.diagonallyFlipped = diagonallyFlipped;
+    }
 
-	/**
-	 * @param properties
-	 *            the properties to set
-	 */
-	public void setProperties(TmxProperties properties) {
-		this.properties = properties;
-	}
+    /**
+     * @param properties
+     *            the properties to set
+     */
+    public void setProperties(TmxProperties properties) {
+	this.properties = properties;
+    }
 
-	/**
-	 * @return the properties for this map, if any
-	 */
-	public TmxProperties getProperties() {
-		return properties;
-	}
+    /**
+     * @return the properties for this map, if any
+     */
+    public TmxProperties getProperties() {
+	return properties;
+    }
 
-	@Override
-	public void accept(TmxElementVisitor visitor) {
-		visitor.visit(this);
-		
-		//visiting all related objects
-		properties.accept(visitor);
-	}
+    @Override
+    public void accept(TmxElementVisitor visitor) {
+	visitor.visit(this);
 
-	@Override
-	public String description() {
-		return "TMX Tile";
-	}
+	// visiting all related objects
+	properties.accept(visitor);
+    }
 
-	@Override
-	public TmxElementAssembler createAssembler() {
-		return new TmxTileAssembler(this);
-	}
+    @Override
+    public String description() {
+	return "TMX Tile";
+    }
 
-	@Override
-	public void getAssembled(TmxElementAssembler assembler) throws TmxInvalidAssembly {
-		assembler.assemble(this);
-	}
+    @Override
+    public TmxElementAssembler createAssembler() {
+	return new TmxTileAssembler(this);
+    }
 
-	/**
-	 * Id for this tile
-	 */
-	private int id = 0;
+    @Override
+    public void getAssembled(TmxElementAssembler assembler) throws TmxInvalidAssembly {
+	assembler.assemble(this);
+    }
 
-	/**
-	 * States whether the tile is horitzontally flipped
-	 */
-	private boolean horitzontallyFlipped = false;
+    /**
+     * Id for this tile
+     */
+    private int id = 0;
 
-	/**
-	 * States whether the tile is vertically flipped
-	 */
-	private boolean verticallyFlipped = false;
+    /**
+     * States whether the tile is horitzontally flipped
+     */
+    private boolean horitzontallyFlipped = false;
 
-	/**
-	 * States whether the tile is flipped diagonally
-	 */
-	private boolean diagonallyFlipped = false;
+    /**
+     * States whether the tile is vertically flipped
+     */
+    private boolean verticallyFlipped = false;
 
-	/**
-	 * Properties for this tileset indexed by name
-	 */
-	private TmxProperties properties = new TmxProperties();
+    /**
+     * States whether the tile is flipped diagonally
+     */
+    private boolean diagonallyFlipped = false;
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (diagonallyFlipped ? 1231 : 1237);
-		result = prime * result + (horitzontallyFlipped ? 1231 : 1237);
-		result = prime * result + id;
-		result = prime * result + ((properties == null) ? 0 : properties.hashCode());
-		result = prime * result + (verticallyFlipped ? 1231 : 1237);
-		return result;
-	}
+    /**
+     * Properties for this tileset indexed by name
+     */
+    private TmxProperties properties = new TmxProperties();
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		TmxTile other = (TmxTile) obj;
-		if (diagonallyFlipped != other.diagonallyFlipped)
-			return false;
-		if (horitzontallyFlipped != other.horitzontallyFlipped)
-			return false;
-		if (id != other.id)
-			return false;
-		if (properties == null) {
-			if (other.properties != null)
-				return false;
-		} else if (!properties.equals(other.properties))
-			return false;
-		if (verticallyFlipped != other.verticallyFlipped)
-			return false;
-		return true;
-	}
+    @Override
+    public int hashCode() {
+	final int prime = 31;
+	int result = 1;
+	result = prime * result + (diagonallyFlipped ? 1231 : 1237);
+	result = prime * result + (horitzontallyFlipped ? 1231 : 1237);
+	result = prime * result + id;
+	result = prime * result + ((properties == null) ? 0 : properties.hashCode());
+	result = prime * result + (verticallyFlipped ? 1231 : 1237);
+	return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+	if (this == obj)
+	    return true;
+	if (obj == null)
+	    return false;
+	if (getClass() != obj.getClass())
+	    return false;
+	TmxTile other = (TmxTile) obj;
+	if (diagonallyFlipped != other.diagonallyFlipped)
+	    return false;
+	if (horitzontallyFlipped != other.horitzontallyFlipped)
+	    return false;
+	if (id != other.id)
+	    return false;
+	if (properties == null) {
+	    if (other.properties != null)
+		return false;
+	} else if (!properties.equals(other.properties))
+	    return false;
+	if (verticallyFlipped != other.verticallyFlipped)
+	    return false;
+	return true;
+    }
 }

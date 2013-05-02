@@ -36,6 +36,10 @@ public interface TmxElementVisitor {
 	void visit(TmxProperties properties);
 
 	void visit(TmxDataTile tile);
+	
+	void visit(TmxTerrain terrain);
+	
+	void visit(TmxTerrainTypes tmxTerrainTypes);
 
 	public static class Default implements TmxElementVisitor {
 
@@ -98,6 +102,13 @@ public interface TmxElementVisitor {
 		@Override
 		public void visit(TmxDataTile tile) {
 		}
-
+		
+		@Override
+		public void visit(TmxTerrain terrain) {
+		}
+		
+		@Override
+		public void visit(TmxTerrainTypes terrainTypes) {
+		}
 	}
 }

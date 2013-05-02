@@ -84,7 +84,15 @@ public abstract class TmxElementAssembler {
 	void assemble(TmxDataTile tile) throws TmxInvalidAssembly {
 		throwAssemblyError(tile);
 	}
+	
+	void assemble(TmxTerrain terrain) throws TmxInvalidAssembly {
+		throwAssemblyError(terrain);
+	}
 
+	public void assemble(TmxTerrainTypes terrainTypes) throws TmxInvalidAssembly {
+	    throwAssemblyError(terrainTypes);
+	}
+	
 	protected void throwAssemblyError(TmxElement assemblee) throws TmxInvalidAssembly {
 		throw new TmxInvalidAssembly(String.format("Cannot assemble a %s into a %s", assemblee.description(),
 				elem.description()));

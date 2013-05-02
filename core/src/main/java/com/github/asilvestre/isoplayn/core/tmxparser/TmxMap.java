@@ -20,292 +20,317 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.TreeMap;
 
+/**
+ * 
+ */
 public class TmxMap implements TmxElement {
-	/**
-	 * Different orientations currently orthogonal or isometric
-	 */
-	public enum Orientations {
-		ORTHOGONAL, ISOMETRIC,
+    /**
+     * Different orientations currently orthogonal or isometric
+     */
+    public enum Orientations {
+	ORTHOGONAL, ISOMETRIC,
+    }
+
+    /**
+     * @return the version
+     */
+    public String getVersion() {
+	return version;
+    }
+
+    /**
+     * @param version
+     *            the version to set
+     */
+    public void setVersion(String version) {
+	this.version = version;
+    }
+
+    /**
+     * @return the orientation
+     */
+    public Orientations getOrientation() {
+	return orientation;
+    }
+
+    /**
+     * @param orientation
+     *            the orientation to set
+     */
+    public void setOrientation(Orientations orientation) {
+	this.orientation = orientation;
+    }
+
+    /**
+     * @return the width
+     */
+    public int getWidth() {
+	return width;
+    }
+
+    /**
+     * @param width
+     *            the width to set
+     */
+    public void setWidth(int width) {
+	this.width = width;
+    }
+
+    /**
+     * @return the height
+     */
+    public int getHeight() {
+	return height;
+    }
+
+    /**
+     * @param height
+     *            the height to set
+     */
+    public void setHeight(int height) {
+	this.height = height;
+    }
+
+    /**
+     * @return the tilewidth
+     */
+    public int getTilewidth() {
+	return tilewidth;
+    }
+
+    /**
+     * @param tilewidth
+     *            the tilewidth to set
+     */
+    public void setTilewidth(int tilewidth) {
+	this.tilewidth = tilewidth;
+    }
+
+    /**
+     * @return the tileheight
+     */
+    public int getTileheight() {
+	return tileheight;
+    }
+
+    /**
+     * @param tileheight
+     *            the tileheight to set
+     */
+    public void setTileheight(int tileheight) {
+	this.tileheight = tileheight;
+    }
+
+    /**
+     * @param firstGid
+     * @return tileset identified by firstGid, null if it's not found
+     */
+    public TmxTileset getTileset(int firstGid) {
+	return tilesets.get(firstGid);
+    }
+
+    /**
+     * @return the tilesets
+     */
+    public Iterator<TmxTileset> getTilesets() {
+	return tilesets.values().iterator();
+    }
+
+    /**
+     * @param tilesets
+     *            the tilesets to set
+     */
+    public void addTileset(TmxTileset tileset) {
+	this.tilesets.put(tileset.getFirstgid(), tileset);
+    }
+
+    /**
+     * @return the layers ordered by Z, the first one being at the top
+     */
+    public Iterator<TmxLayer> getLayers() {
+	return layers.iterator();
+    }
+
+    /**
+     * It will add a layer to the map below the current ones
+     * 
+     * @param layer
+     *            to add
+     */
+    public void addLayer(TmxLayer layer) {
+	layers.add(layer);
+    }
+
+    /**
+     * @param properties
+     *            the properties to set
+     */
+    public void setProperties(TmxProperties properties) {
+	this.properties = properties;
+    }
+
+    /**
+     * @return the properties for this map, if any
+     */
+    public TmxProperties getProperties() {
+	return properties;
+    }
+
+    /**
+     * @return the background color
+     */
+    public int getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    /**
+     * @param backgroundColor the background color for the map
+     */
+    public void setBackgroundColor(int backgroundColor) {
+        this.backgroundColor = backgroundColor;
+    }
+
+    @Override
+    public void accept(TmxElementVisitor visitor) {
+	visitor.visit(this);
+
+	// Visiting all related objects
+	Iterator<TmxTileset> iterTilesets = tilesets.values().iterator();
+	while (iterTilesets.hasNext()) {
+	    iterTilesets.next().accept(visitor);
 	}
 
-	/**
-	 * @return the version
-	 */
-	public String getVersion() {
-		return version;
+	Iterator<TmxLayer> iterLayers = layers.iterator();
+	while (iterLayers.hasNext()) {
+	    iterLayers.next().accept(visitor);
 	}
 
-	/**
-	 * @param version
-	 *            the version to set
-	 */
-	public void setVersion(String version) {
-		this.version = version;
-	}
+	properties.accept(visitor);
+    }
 
-	/**
-	 * @return the orientation
-	 */
-	public Orientations getOrientation() {
-		return orientation;
-	}
+    @Override
+    public String description() {
+	return "TMX Map";
+    }
 
-	/**
-	 * @param orientation
-	 *            the orientation to set
-	 */
-	public void setOrientation(Orientations orientation) {
-		this.orientation = orientation;
-	}
+    @Override
+    public TmxElementAssembler createAssembler() {
+	return new TmxMapAssembler(this);
+    }
 
-	/**
-	 * @return the width
-	 */
-	public int getWidth() {
-		return width;
-	}
+    @Override
+    public void getAssembled(TmxElementAssembler assembler) throws TmxInvalidAssembly {
+	assembler.assemble(this);
+    }
 
-	/**
-	 * @param width
-	 *            the width to set
-	 */
-	public void setWidth(int width) {
-		this.width = width;
-	}
+    /**
+     * TMX version
+     */
+    private String version = "1.0";
 
-	/**
-	 * @return the height
-	 */
-	public int getHeight() {
-		return height;
-	}
+    /**
+     * Map orientation
+     */
+    private Orientations orientation = Orientations.ORTHOGONAL;
 
-	/**
-	 * @param height
-	 *            the height to set
-	 */
-	public void setHeight(int height) {
-		this.height = height;
-	}
+    /**
+     * The map width in tiles
+     */
+    private int width = 0;
 
-	/**
-	 * @return the tilewidth
-	 */
-	public int getTilewidth() {
-		return tilewidth;
-	}
+    /**
+     * The map height in tiles
+     */
+    private int height = 0;
 
-	/**
-	 * @param tilewidth
-	 *            the tilewidth to set
-	 */
-	public void setTilewidth(int tilewidth) {
-		this.tilewidth = tilewidth;
-	}
+    /**
+     * The width of a tile
+     */
+    private int tilewidth = 0;
 
-	/**
-	 * @return the tileheight
-	 */
-	public int getTileheight() {
-		return tileheight;
-	}
+    /**
+     * The height of a tile
+     */
+    private int tileheight = 0;
 
-	/**
-	 * @param tileheight
-	 *            the tileheight to set
-	 */
-	public void setTileheight(int tileheight) {
-		this.tileheight = tileheight;
-	}
+    /**
+     * The color of the map
+     */
+    private int backgroundColor = 0;
 
-	/**
-	 * @param firstGid
-	 * @return tileset identified by firstGid, null if it's not found
-	 */
-	public TmxTileset getTileset(int firstGid) {
-		return tilesets.get(firstGid);
-	}
+    /**
+     * Tilesets for this map indexed by firstgid
+     */
+    private TreeMap<Integer, TmxTileset> tilesets = new TreeMap<Integer, TmxTileset>();
 
-	/**
-	 * @return the tilesets
-	 */
-	public Iterator<TmxTileset> getTilesets() {
-		return tilesets.values().iterator();
-	}
+    /**
+     * Layers for this map ordered by Z, being the first the one at the top
+     */
+    private LinkedList<TmxLayer> layers = new LinkedList<TmxLayer>();
 
-	/**
-	 * @param tilesets
-	 *            the tilesets to set
-	 */
-	public void addTileset(TmxTileset tileset) {
-		this.tilesets.put(tileset.getFirstgid(), tileset);
-	}
+    /**
+     * Properties for this map indexed by name
+     */
+    private TmxProperties properties = new TmxProperties();
 
-	/**
-	 * @return the layers ordered by Z, the first one being at the top
-	 */
-	public Iterator<TmxLayer> getLayers() {
-		return layers.iterator();
-	}
+    @Override
+    public int hashCode() {
+	final int prime = 31;
+	int result = 1;
+	result = prime * result + backgroundColor;
+	result = prime * result + height;
+	result = prime * result + ((layers == null) ? 0 : layers.hashCode());
+	result = prime * result + ((orientation == null) ? 0 : orientation.hashCode());
+	result = prime * result + ((properties == null) ? 0 : properties.hashCode());
+	result = prime * result + tileheight;
+	result = prime * result + ((tilesets == null) ? 0 : tilesets.hashCode());
+	result = prime * result + tilewidth;
+	result = prime * result + ((version == null) ? 0 : version.hashCode());
+	result = prime * result + width;
+	return result;
+    }
 
-	/**
-	 * It will add a layer to the map below the current ones
-	 * 
-	 * @param layer
-	 *            to add
-	 */
-	public void addLayer(TmxLayer layer) {
-		layers.add(layer);
-	}
-
-	/**
-	 * @param properties
-	 *            the properties to set
-	 */
-	public void setProperties(TmxProperties properties) {
-		this.properties = properties;
-	}
-
-	/**
-	 * @return the properties for this map, if any
-	 */
-	public TmxProperties getProperties() {
-		return properties;
-	}
-
-	@Override
-	public void accept(TmxElementVisitor visitor) {
-		visitor.visit(this);
-
-		// Visiting all related objects
-		Iterator<TmxTileset> iterTilesets = tilesets.values().iterator();
-		while (iterTilesets.hasNext()) {
-			iterTilesets.next().accept(visitor);
-		}
-
-		Iterator<TmxLayer> iterLayers = layers.iterator();
-		while (iterLayers.hasNext()) {
-			iterLayers.next().accept(visitor);
-		}
-
-		properties.accept(visitor);
-	}
-
-	@Override
-	public String description() {
-		return "TMX Map";
-	}
-
-	@Override
-	public TmxElementAssembler createAssembler() {
-		return new TmxMapAssembler(this);
-	}
-
-	@Override
-	public void getAssembled(TmxElementAssembler assembler) throws TmxInvalidAssembly {
-		assembler.assemble(this);
-	}
-
-	/**
-	 * TMX version
-	 */
-	private String version = "1.0";
-
-	/**
-	 * Map orientation
-	 */
-	private Orientations orientation = Orientations.ORTHOGONAL;
-
-	/**
-	 * The map width in tiles
-	 */
-	private int width = 0;
-
-	/**
-	 * The map height in tiles
-	 */
-	private int height = 0;
-
-	/**
-	 * The width of a tile
-	 */
-	private int tilewidth = 0;
-
-	/**
-	 * The height of a tile
-	 */
-	private int tileheight = 0;
-
-	/**
-	 * Tilesets for this map indexed by firstgid
-	 */
-	private TreeMap<Integer, TmxTileset> tilesets = new TreeMap<Integer, TmxTileset>();
-
-	/**
-	 * Layers for this map ordered by Z, being the first the one at the top
-	 */
-	private LinkedList<TmxLayer> layers = new LinkedList<TmxLayer>();
-
-	/**
-	 * Properties for this map indexed by name
-	 */
-	private TmxProperties properties = new TmxProperties();
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + height;
-		result = prime * result + ((layers == null) ? 0 : layers.hashCode());
-		result = prime * result + ((orientation == null) ? 0 : orientation.hashCode());
-		result = prime * result + ((properties == null) ? 0 : properties.hashCode());
-		result = prime * result + tileheight;
-		result = prime * result + ((tilesets == null) ? 0 : tilesets.hashCode());
-		result = prime * result + tilewidth;
-		result = prime * result + ((version == null) ? 0 : version.hashCode());
-		result = prime * result + width;
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		TmxMap other = (TmxMap) obj;
-		if (height != other.height)
-			return false;
-		if (layers == null) {
-			if (other.layers != null)
-				return false;
-		} else if (!layers.equals(other.layers))
-			return false;
-		if (orientation != other.orientation)
-			return false;
-		if (properties == null) {
-			if (other.properties != null)
-				return false;
-		} else if (!properties.equals(other.properties))
-			return false;
-		if (tileheight != other.tileheight)
-			return false;
-		if (tilesets == null) {
-			if (other.tilesets != null)
-				return false;
-		} else if (!tilesets.equals(other.tilesets))
-			return false;
-		if (tilewidth != other.tilewidth)
-			return false;
-		if (version == null) {
-			if (other.version != null)
-				return false;
-		} else if (!version.equals(other.version))
-			return false;
-		if (width != other.width)
-			return false;
-		return true;
-	}
+    @Override
+    public boolean equals(Object obj) {
+	if (this == obj)
+	    return true;
+	if (obj == null)
+	    return false;
+	if (getClass() != obj.getClass())
+	    return false;
+	TmxMap other = (TmxMap) obj;
+	if (backgroundColor != other.backgroundColor)
+	    return false;
+	if (height != other.height)
+	    return false;
+	if (layers == null) {
+	    if (other.layers != null)
+		return false;
+	} else if (!layers.equals(other.layers))
+	    return false;
+	if (orientation != other.orientation)
+	    return false;
+	if (properties == null) {
+	    if (other.properties != null)
+		return false;
+	} else if (!properties.equals(other.properties))
+	    return false;
+	if (tileheight != other.tileheight)
+	    return false;
+	if (tilesets == null) {
+	    if (other.tilesets != null)
+		return false;
+	} else if (!tilesets.equals(other.tilesets))
+	    return false;
+	if (tilewidth != other.tilewidth)
+	    return false;
+	if (version == null) {
+	    if (other.version != null)
+		return false;
+	} else if (!version.equals(other.version))
+	    return false;
+	if (width != other.width)
+	    return false;
+	return true;
+    }
 }

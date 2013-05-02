@@ -118,6 +118,18 @@ public class TmxImage implements TmxElement {
 	 * The image height in pixels, optional
 	 */
 	private int height = 0;
+	
+	/**
+	 * Format for the image, if there is a Data element with the image
+	 * TODO: We don't support embedded images for the moment
+	 */
+	//private String format= "";
+	
+	/**
+	 * Data for the image instead of from a file
+	 * TODO: We don't support embedded images for the moment
+	 */
+	//private TmxData data = null;
 
 	@Override
 	public int hashCode() {
